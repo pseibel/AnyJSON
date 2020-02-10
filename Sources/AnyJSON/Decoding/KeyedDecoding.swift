@@ -16,6 +16,18 @@ public extension KeyedDecodingContainerProtocol {
         var container = try self.nestedUnkeyedContainer(forKey: key)
         return try container.decodeAllValuesAsJSONArray()
     }
+    
+    func decodeJSONRootValue(forKey key: Key) throws -> JSONRootValue {
+        do {
+            return try decodeJSONObject(forKey: key)
+        } catch {}
+        
+        do {
+            return try decodeJSONArray(forKey: key)
+        } catch {
+            throw DecodingError.dataCorruptedError(forKey: key, in: self, debugDescription: "Not a valid JSON root value.")
+        }
+    }
 }
 
 extension KeyedDecodingContainerProtocol where Key == JSONObjectKey {

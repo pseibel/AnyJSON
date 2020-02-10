@@ -6,12 +6,12 @@
 
 import Foundation
 
-extension Encoder {
-    func encode(jsonValue: JSONValue) throws {
-        if let array = jsonValue as? JSONArray {
+public extension Encoder {
+    func encode(jsonRootValue: JSONRootValue) throws {
+        if let array = jsonRootValue as? JSONArray {
             var container = self.unkeyedContainer()
             try container.encodeAll(from: array)
-        } else if let object = jsonValue as? JSONObject {
+        } else if let object = jsonRootValue as? JSONObject {
             var container = self.container(keyedBy: JSONObjectKey.self)
             try container.encodeAll(from: object)
         }

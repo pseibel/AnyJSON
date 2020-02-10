@@ -14,6 +14,18 @@ extension KeyedEncodingContainerProtocol where Key == JSONObjectKey {
     }
 }
 
+public extension KeyedEncodingContainerProtocol {
+    mutating func encode(_ jsonRootValue: JSONRootValue, forKey key: Key) throws {
+        if let array = jsonRootValue as? JSONArray {
+            var container = self.nestedUnkeyedContainer(forKey: key)
+            try container.encodeAll(from: array)
+        } else if let object = jsonRootValue as? JSONObject {
+            var container = self.nestedContainer(keyedBy: JSONObjectKey.self, forKey: key)
+            try container.encodeAll(from: object)
+        }
+    }
+}
+
 public extension KeyedEncodingContainerProtocol where Key == JSONObjectKey {
     mutating func encode(_ jsonObject: JSONObject, forKey key: Key) throws {
         var container = self.nestedContainer(keyedBy: JSONObjectKey.self, forKey: key)

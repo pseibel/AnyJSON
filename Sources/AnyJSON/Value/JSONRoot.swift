@@ -24,6 +24,6 @@ struct JSONRoot: Codable {
     }
     
     func encode(to encoder: Encoder) throws {
-        try encoder.encode(jsonValue: rootValue)
+        try encoder.encode(jsonRootValue: rootValue)
     }
 }
